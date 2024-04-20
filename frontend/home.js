@@ -5,7 +5,7 @@ let expenseList=[]
 function checkIfUserLoggedIn(){
     const token= localStorage.getItem(`token`)
     if(!token){
-        window.location.href = `http://localhost:4000`
+        window.location.href = ``
     }
 }
 
@@ -198,7 +198,7 @@ function filterExpense(){
 function logout() {
     
     localStorage.removeItem('token');
-    window.location.href = `http://localhost:4000`
+    window.location.href = `https://expense-tracker-wa0y.onrender.com`
 }
 
 function addOption(htmlID,start,end,accending){
