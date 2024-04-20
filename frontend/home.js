@@ -5,7 +5,7 @@ let expenseList=[]
 function checkIfUserLoggedIn(){
     const token= localStorage.getItem(`token`)
     if(!token){
-        window.location.href = `https://expense-tracker-wa0y.onrender.com`
+        window.location.href = `http://localhost:4000`
     }
 }
 
@@ -60,7 +60,7 @@ async function CreateExpense(){
     }catch(error){
         alert(`error happened ${error}`)
     }
-    generateAllExpense(expenseList)
+    GetAllExpense()
 }
 
 async function GetAllExpense(){
@@ -79,30 +79,36 @@ async function GetAllExpense(){
 async function generateAllExpense(expenseList){
     const expenseElements = document.getElementById('ExpenseItems')
     expenseElements.innerHTML=""
+    const token=decodeJWT(localStorage.getItem(`token`))
+    
+    const userID=token.payload.id
     
     for(let expense of expenseList){
-        const expenseCard=`
-        <div id="accordion-${expense._id}">
-            <div class="accordion-item" >
-                <h2 class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse${expense._id}" aria-expanded="false" aria-controls="collapse${expense._id}">
-                <!--Accordion title-->
-                ${expense.title} ${expense.date.slice(0,10)} $${expense.cost}
-                </button>
-                </h2>
-                <div id="collapse${expense._id}" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-                    <div class="accordion-body">
-                    <!--acordian body-->
-                        <div>
-                            <strong>Type:</strong> ${expense.type}     <strong>Description:</strong> ${expense.description}
+        if(userID==expense.user){
+        
+        
+            const expenseCard=`
+            <div id="accordion-${expense._id}">
+                <div class="accordion-item" >
+                    <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse${expense._id}" aria-expanded="false" aria-controls="collapse${expense._id}">
+                    <!--Accordion title-->
+                    ${expense.title} ${expense.date.slice(0,10)} $${expense.cost}
+                    </button>
+                    </h2>
+                    <div id="collapse${expense._id}" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                        <!--acordian body-->
+                            <div>
+                                <strong>Type:</strong> ${expense.type}     <strong>Description:</strong> ${expense.description}
+                            </div>
+                        <button type="button" class="btn btn-danger" onclick="DeleteExpense('${expense._id}')">DELETE</button>
                         </div>
-                    <button type="button" class="btn btn-danger" onclick="DeleteExpense('${expense._id}')">DELETE</button>
                     </div>
                 </div>
-            </div>
-        </div>`
-        expenseElements.innerHTML+=expenseCard
-        
+            </div>`
+            expenseElements.innerHTML+=expenseCard
+        }
     }
 }
 
@@ -192,7 +198,7 @@ function filterExpense(){
 function logout() {
     
     localStorage.removeItem('token');
-    window.location.href = `https://expense-tracker-wa0y.onrender.com`
+    window.location.href = `http://localhost:4000`
 }
 
 function addOption(htmlID,start,end,accending){
@@ -209,6 +215,21 @@ function addOption(htmlID,start,end,accending){
 
 }
 
+function decodeJWT(token) {
+    // Split the token into its three parts
+    const parts = token.split('.');
+    
+    // Decode each part
+    const decodedHeader = JSON.parse(atob(parts[0]));
+    const decodedPayload = JSON.parse(atob(parts[1]));
+
+    // Return decoded header and payload
+    return {
+        header: decodedHeader,
+        payload: decodedPayload
+    };
+}
+
 checkIfUserLoggedIn()
 GetAllExpense()
 addOption("year",2025,1950,false)
@@ -217,3 +238,4 @@ addOption("day",1,31,true)
 
 addOption("filter-month",1,12,true)
 addOption("filter-year",2025,1950,false)
+

@@ -3,6 +3,8 @@ const jwt= require(`jsonwebtoken`)
 const userModel = require(`../model/user`)
 const { error } = require("console")
 const GetAllExpense= async (req,res)=>{
+    
+    
     try{
         const expense = await ExpenseModel.find()
         return res.status(200).json({
@@ -19,6 +21,7 @@ const GetAllExpense= async (req,res)=>{
 
 const CreateExpense= async (req,res)=>{
     const allHeader= req.headers
+    console.log(allHeader)
     if(!allHeader.authorization){
         return res.status(401).json({
             message: `pls provide token`
