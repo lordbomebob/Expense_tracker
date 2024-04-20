@@ -1,0 +1,12 @@
+#signup-register{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height:80vh;
+    
+}
+html,
+body{
+    height: 100vh;
+}
