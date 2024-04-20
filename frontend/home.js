@@ -5,7 +5,7 @@ let expenseList=[]
 function checkIfUserLoggedIn(){
     const token= localStorage.getItem(`token`)
     if(!token){
-        window.location.href = ``
+        window.location.href = `https://expense-tracker-wa0y.onrender.com`
     }
 }
 
