@@ -53,7 +53,7 @@ async function loginUser(){
         if (logInUserJSON){
             localStorage.setItem(`token`, logInUserJSON.data.token)
             alert(logInUserJSON.message)
-            window.location.href = `https://expense-tracker-wa0y.onrender.com`
+            window.location.href = `https://expense-tracker-wa0y.onrender.com/home.html`
         }
     }catch(error){
         alert(`error happened ${error}`)
